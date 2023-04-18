@@ -22,12 +22,12 @@ plugins:[
     new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src/index.html'),
     })
-]
+],
 devtool: "source-map", //minifie le css mais garde la possibilité d'afficher propre
-mode: 'developpement',
+mode: 'development',
 devServer: {
     open: true,  //ouvre le navigateur par défaut
-    watchFiles: ['./src/**']    //tout ce qu'il y a dans src
+    watchFiles: ['./src/**'],    //tout ce qu'il y a dans src
     port: 3000, //pour ne pas mettre 80 comme laragon
     hot: true   //surveille les maj
 }
