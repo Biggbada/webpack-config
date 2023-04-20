@@ -1,5 +1,7 @@
 const path = require ('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');  //ici on declare le plug-in que l'on a installé
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -7,6 +9,14 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.bundle.js',
         clean: true
+    },
+    optimization:{
+        minimize : true,
+        minimizer:[
+            new TerserPlugin({
+                parallel: true,
+            })
+        ]
     },
     module: {
     rules:[
@@ -16,12 +26,22 @@ module.exports = {
             use:{
                 loader: "babel-loader",
             }
+        },
+        {
+            test: /\.css$/,
+            use:[
+                MiniCssExtractPlugin.loader,
+                'css-loader'
+            ]
         }
     ] 
 },
 plugins:[
     new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src/index.html'),
+    }),
+    new MiniCssExtractPlugin({
+        filename: "style-min.css",
     })
 ],
 devtool: "source-map", //minifie le css mais garde la possibilité d'afficher propre
@@ -31,7 +51,9 @@ devServer: {
     //watchFiles: ['./src/**'],    //ecoute tout ce qu'il y a dans src
     port: 3000, //pour ne pas mettre 80 comme laragon
     hot: true,   //surveille les maj
-    static: ".dist/",
+    static: {
+        directory: path.join(__dirname, 'dist')
+    },
     liveReload: true
 }
 

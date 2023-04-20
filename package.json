@@ -8,13 +8,17 @@
     "watch": "webpack --watch --mode=development",
     "build": "webpack --mode=development",
     "start": "webpack-dev-server",
-    "webdev": "npm run build && npm run start"
+    "webdev": "concurrently \"npm run watch\" \"npm run start\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^8.0.1",
+    "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.1",
+    "mini-css-extract-plugin": "^2.7.5",
+    "terser-webpack-plugin": "^5.3.7",
     "webpack": "^5.78.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.2"
