@@ -2,6 +2,8 @@ const path = require ('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');  //ici on declare le plug-in que l'on a installé
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 module.exports = {
     entry: './src/index.js',
@@ -15,7 +17,20 @@ module.exports = {
         minimizer:[
             new TerserPlugin({
                 parallel: true,
+            }),
+            new ImageMinimizerPlugin({
+                generator: [
+                    {
+                     type: 'asset',
+                     implementation: ImageMinimizerPlugin.imageminGenerate,
+                     preset: 'webp',
+                     options: {
+                        plugins: ["imagemin-webp"]
+                     }   
+                    }
+                ]
             })
+            
         ]
     },
     module: {
@@ -42,6 +57,14 @@ plugins:[
     }),
     new MiniCssExtractPlugin({
         filename: "style-min.css",
+    }),
+    new CopyPlugin({
+        patterns: [
+            {
+                from: "./src/assets/images/",
+                to: "./assets/imzges/"
+            }
+        ]
     })
 ],
 devtool: "source-map", //minifie le css mais garde la possibilité d'afficher propre
